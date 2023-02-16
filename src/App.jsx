@@ -5,70 +5,46 @@ import exportData from "./data";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 import Detail from "./components/Detail";
 import About from "./components/About";
+import Main from "./components/Main";
+import { Calendar, ConfigProvider } from 'antd';
 
-const Card = (props) => {
-  return (
-    <div className="col-md-4">
-      <img
-        src={"https://codingapple1.github.io/shop/shoes" + props.i + ".jpg"}
-        width="80%"
-      />
-      <h4>{props.shoes.title}</h4>
-      <p>{props.shoes.price}</p>
-    </div>
-  );
-};
 
 function App() {
+  const navigate = useNavigate();
   let [shoes, setShoes] = useState(exportData);
 
-  let navigate = useNavigate();
+  const onPanelChange = (value, mode) => {
+    console.log(value.format('YYYY-MM-DD'), mode);
+  };
 
   return (
     <div className="App">
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+          <Navbar.Brand href="/">FINDME</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/detail">Detail</Nav.Link>
-            <Nav.Link
-              onClick={() => {
-                navigate("/detail");
-              }}
-            >
-              onclickDetail
-            </Nav.Link>
-            <Nav.Link href="/about">Pricing</Nav.Link>
+            <Nav.Link href="/">Calender</Nav.Link>
+            <Nav.Link href="/about">About us</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
 
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: "#ffffff",
+            colorBgBase:"#2e3030",
+            colorPrimaryBg:"#687070",
+            colorText:"#ffffff"
+          },
+        }}
+      >
+        <Calendar onPanelChange={onPanelChange} style={{}} />
+      </ConfigProvider>
+
       <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <div className="main-bg"></div>
-              <div className="App">
-                <div className="container">
-                  <div className="row">
-                    {shoes.map((a, index) => {
-                      return (
-                        <Card
-                          shoes={shoes[index]}
-                          i={index + 1}
-                          key={index}
-                        ></Card>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            </>
-          }
-        />
-        <Route path="/detail" element={<Detail />} />
+        <Route path="/" element={<Main />} />
+        <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
         <Route path="/about" element={<About />}>
           <Route path="member" element={<div>멤버들</div>} />
           <Route path="location" element={<div>회사위치</div>} />
