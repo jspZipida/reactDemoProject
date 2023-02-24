@@ -50,8 +50,8 @@ const Main = () => {
             {shoes.map((a, index) => {
               const idx = index + 1;
               return (
-                <div onClick={() => navigate(`/detail/${index}`)}>
-                  <Card shoes={shoes[index]} i={idx} key={index}></Card>
+                <div onClick={() => navigate(`/detail/${index}`)} key={index}>
+                  <Card shoes={shoes[index]} i={idx}></Card>
                 </div>
               );
             })}
